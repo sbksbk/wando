@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>완도해양치유센터 이벤트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #ffffff;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 1rem 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    .grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .grid img:hover {
+      transform: scale(1.02);
+    }
+
+    /* 모달 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      font-size: 3rem;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>해양치유완도 이벤트 안내</h1>
+
+<div class="grid">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1743035599.jpg" alt="현장 접수 안내" onclick="openModal(this.src)">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1743648002.jpg" alt="시외버스 안내" onclick="openModal(this.src)">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1744678139.png" alt="출산장려 이벤트" onclick="openModal(this.src)">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1745303128.png" alt="특별할인 이벤트" onclick="openModal(this.src)">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1746006588.png" alt="신규 프로그램" onclick="openModal(this.src)">
+  <img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1747022757.jpg" alt="식당 안내" onclick="openModal(this.src)">
+</div>
+
+<div id="modal" class="modal" onclick="closeModal()">
+  <span class="modal-close" onclick="closeModal()">&times;</span>
+  <img id="modal-img" src="">
+</div>
+
+<script>
+  function openModal(src) {
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
