@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>완도해양치유센터 이벤트 안내</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.8rem; /* ✅ 더 크게 */
+      margin: 1.5rem 0 1rem;
+      color: #222;
+    }
+
+    .swiper {
+      width: 100vw;
+      height: calc(100vh - 100px); /* 제목 여백 반영 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .swiper-slide {
+      width: 360px; /* ✅ 더 크게 */
+      transition: opacity 0.4s;
+      opacity: 0.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide-active {
+      opacity: 1;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease;
+    }
+
+    .swiper-slide-active img {
+      transform: scale(1.3); /* ✅ 더 확대 */
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>완도해양치유센터 이벤트 안내</h1>
+
+<div class="swiper main-swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1743035599.jpg" alt="현장 접수 안내"></div>
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1743648002.jpg" alt="시외버스 안내"></div>
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1744678139.png" alt="출산장려 이벤트"></div>
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1745303128.png" alt="이벤트 통합 안내"></div>
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1746006588.png" alt="신규 프로그램"></div>
+    <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1747022757.jpg" alt="식당 안내"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  const mainSwiper = new Swiper('.main-swiper', {
+    loop: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    spaceBetween: 30,
+    grabCursor: true,
+  });
+</script>
+
+</body>
+</html>
