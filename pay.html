@@ -22,7 +22,6 @@
       display: flex;
       justify-content: center;
       gap: 3rem;
-      flex-wrap: wrap;
     }
 
     .program {
@@ -67,8 +66,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.6);
       justify-content: center;
       align-items: center;
@@ -79,8 +77,7 @@
       background: white;
       padding: 2rem;
       border-radius: 12px;
-      max-width: 90vw;
-      max-height: 90vh;
+      max-width: 90vw; max-height: 90vh;
       overflow: auto;
       text-align: center;
       position: relative;
@@ -101,14 +98,11 @@
 
     .close-icon {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 10px; right: 10px;
       background: white;
       color: black;
       font-size: 2rem;
-      font-weight: bold;
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -118,64 +112,90 @@
       z-index: 10;
     }
 
+    /* 결제 박스 */
     #paymentBox {
       display: none;
-      margin-top: 3rem;
+      margin: 3rem auto;
       background: white;
       border-radius: 12px;
       padding: 2rem;
-      width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      width: 90vw;
+      max-width: 800px;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      text-align: left;
     }
 
     #paymentBox h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      text-align: center;
+      margin: 0 0 1.5rem;
     }
 
-    #paymentBox p {
-      font-size: 1.4rem;
-      margin: 1rem 0;
+    .payment-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4rem;
+    }
+
+    .payment-left {
+      flex: none;
+      min-width: 200px;
+    }
+
+    .payment-left p {
+      font-size: 1.6rem;
+      margin: 0.8rem 0;
+    }
+
+    .payment-left .count-row {
+      display: flex;
+      align-items: center;
     }
 
     .count-btn {
-      font-size: 1.5rem;
-      width: 40px;
-      height: 40px;
+      font-size: 1.4rem;
+      width: 40px; height: 40px;
       margin: 0 10px;
       border: none;
       border-radius: 8px;
       background-color: #e0e0e0;
       cursor: pointer;
+      vertical-align: middle;
     }
 
-    #qrSection {
-      display: none;
-      margin-top: 2rem;
-    }
-
-    #qrSection img {
-      width: 200px;
-      height: 200px;
-    }
-
-    #qrSection p {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      color: #444;
+    #peopleCount {
+      display: inline-block;
+      font-size: 1.6rem;
+      vertical-align: middle;
+      width: 40px;
+      text-align: center;
     }
 
     .pay-btn {
-      margin-top: 1rem;
-      padding: 0.7rem 2rem;
+      padding: 0.8rem 2rem;
       background: #03c75a;
       color: white;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       border-radius: 8px;
       border: none;
       cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .payment-right {
+      flex: none;
+      text-align: center;
+    }
+
+    .payment-right p {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .payment-right img {
+      width: 150px;
+      height: 150px;
     }
   </style>
 </head>
@@ -210,11 +230,11 @@
     </div>
   </div>
 
-  <!-- 상세 이미지 모달 -->
+  <!-- 상세 보기 모달 -->
   <div class="modal" id="detailModal">
     <div class="modal-content">
       <div class="close-icon" onclick="closeModal()">×</div>
-      <h2 id="modalTitle">상세 보기</h2>
+      <h2 id="modalTitle">상세보기</h2>
       <img id="modalImage" src="" alt="상세 이미지" onclick="toggleZoom(this)">
     </div>
   </div>
@@ -222,27 +242,30 @@
   <!-- 결제창 -->
   <div id="paymentBox">
     <h2>프로그램 결제</h2>
-    <p id="selectedProgram"></p>
-    <p>
-      인원수:
-      <button onclick="changeCount(-1)" class="count-btn">−</button>
-      <span id="peopleCount" style="display:inline-block; min-width: 30px;">1</span>
-      <button onclick="changeCount(1)" class="count-btn">＋</button>
-    </p>
-    <p>총 금액: <span id="totalPrice">0</span>원</p>
-    <button class="pay-btn" onclick="showQR()">결제하기</button>
-
-    <div id="qrSection">
-      <p>👇 스마트폰으로 QR을 스캔해 결제하세요</p>
-      <img src="qr.jpg" alt="네이버페이 결제 QR코드">
+    <div class="payment-content">
+      <div class="payment-left">
+        <p id="selectedProgram">기본 프로그램 (36,000원)</p>
+        <p class="count-row">
+          인원수:
+          <button onclick="changeCount(-1)" class="count-btn">−</button>
+          <span id="peopleCount">1</span>
+          <button onclick="changeCount(1)" class="count-btn">＋</button>
+        </p>
+        <p>총 금액: <span id="totalPrice">36,000</span>원</p>
+        <button class="pay-btn" onclick="showQR()">결제하기</button>
+      </div>
+      <div class="payment-right" id="qrSection">
+        <p>👇 스마트폰으로 QR을 스캔해 결제하세요</p>
+        <img src="qr.jpg" alt="네이버페이 결제 QR코드">
+      </div>
     </div>
   </div>
 
   <script>
     const detailMap = {
-      "기본": "./basic.jpg",
-      "디럭스": "./deluxe.jpg",
-      "프리미엄": "./premium.jpg"
+      "기본": "basic.jpg",
+      "디럭스": "deluxe.jpg",
+      "프리미엄": "premium.jpg"
     };
 
     const priceMap = {
@@ -252,45 +275,39 @@
     };
 
     let currentCount = 1;
-    let currentUnitPrice = 0;
+    let currentUnitPrice = 36000;
 
     function showDetail(type) {
       document.getElementById("modalTitle").innerText = `${type} 프로그램 상세보기`;
-      const modalImg = document.getElementById("modalImage");
-      modalImg.src = detailMap[type];
-      modalImg.classList.remove("zoomed");
+      const img = document.getElementById("modalImage");
+      img.src = detailMap[type];
+      img.classList.remove("zoomed");
       document.getElementById("detailModal").style.display = "flex";
     }
-
     function closeModal() {
       document.getElementById("detailModal").style.display = "none";
     }
-
     function toggleZoom(img) {
       img.classList.toggle("zoomed");
     }
 
     function selectProgram(type) {
-      const unitPrice = priceMap[type];
       currentCount = 1;
-      currentUnitPrice = unitPrice;
-      document.getElementById("selectedProgram").innerText = `${type} 프로그램 (${unitPrice.toLocaleString()}원)`;
-      document.getElementById("paymentBox").style.display = "block";
+      currentUnitPrice = priceMap[type];
+      document.getElementById("selectedProgram").innerText =
+        `${type} 프로그램 (${currentUnitPrice.toLocaleString()}원)`;
       document.getElementById("peopleCount").innerText = currentCount;
+      document.getElementById("totalPrice").innerText =
+        currentUnitPrice.toLocaleString();
       document.getElementById("qrSection").style.display = "none";
-      updateTotal();
+      document.getElementById("paymentBox").style.display = "block";
     }
 
     function changeCount(delta) {
-      currentCount += delta;
-      if (currentCount < 1) currentCount = 1;
+      currentCount = Math.max(1, currentCount + delta);
       document.getElementById("peopleCount").innerText = currentCount;
-      updateTotal();
-    }
-
-    function updateTotal() {
-      const total = currentCount * currentUnitPrice;
-      document.getElementById("totalPrice").innerText = total.toLocaleString();
+      document.getElementById("totalPrice").innerText =
+        (currentCount * currentUnitPrice).toLocaleString();
     }
 
     function showQR() {
