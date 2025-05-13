@@ -11,11 +11,14 @@
       padding: 2rem;
       text-align: center;
     }
+
     .programs {
       display: flex;
       justify-content: center;
       gap: 2rem;
+      flex-wrap: wrap;
     }
+
     .program {
       background: white;
       padding: 2rem;
@@ -23,14 +26,17 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       width: 200px;
     }
+
     .title {
       font-size: 1.3rem;
       margin-bottom: 0.5rem;
     }
+
     .price {
       margin-bottom: 1rem;
       font-weight: bold;
     }
+
     .button-group button {
       margin: 0.2rem;
       padding: 0.5rem 1rem;
@@ -38,10 +44,12 @@
       border-radius: 8px;
       cursor: pointer;
     }
+
     .detail-btn {
       background: #007bff;
       color: white;
     }
+
     .select-btn {
       background: #28a745;
       color: white;
@@ -59,26 +67,55 @@
       align-items: center;
       z-index: 1000;
     }
+
     .modal-content {
       background: white;
       padding: 2rem;
       border-radius: 12px;
-      max-width: 600px;
-      width: 90%;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow: auto;
       text-align: center;
+      position: relative;
     }
+
     .modal img {
       max-width: 100%;
       height: auto;
-      margin: 1rem 0;
-    }
-    .close-btn {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 0.5rem 1.5rem;
       border-radius: 8px;
+      transition: transform 0.3s ease;
+      cursor: zoom-in;
+    }
+
+    .modal img.zoomed {
+      transform: scale(1.5); /* 확대 효과 */
+      cursor: zoom-out;
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: white;
+      color: black;
+      font-size: 2rem;
+      font-weight: bold;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    @media (max-width: 600px) {
+      .modal-content {
+        width: 95vw;
+        height: 90vh;
+      }
     }
   </style>
 </head>
@@ -116,10 +153,9 @@
   <!-- 모달 -->
   <div class="modal" id="detailModal">
     <div class="modal-content">
+      <div class="close-icon" onclick="closeModal()">×</div>
       <h2 id="modalTitle">상세 보기</h2>
-      <img id="modalImage" src="" alt="상세 이미지">
-      <br>
-      <button class="close-btn" onclick="closeModal()">닫기</button>
+      <img id="modalImage" src="" alt="상세 이미지" onclick="toggleZoom(this)">
     </div>
   </div>
 
@@ -132,12 +168,18 @@
 
     function showDetail(type) {
       document.getElementById("modalTitle").innerText = `${type} 프로그램 상세보기`;
-      document.getElementById("modalImage").src = detailMap[type];
+      const modalImg = document.getElementById("modalImage");
+      modalImg.src = detailMap[type];
+      modalImg.classList.remove("zoomed");
       document.getElementById("detailModal").style.display = "flex";
     }
 
     function closeModal() {
       document.getElementById("detailModal").style.display = "none";
+    }
+
+    function toggleZoom(img) {
+      img.classList.toggle("zoomed");
     }
   </script>
 
