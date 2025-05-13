@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>해양치유완도 결제 데모</title>
+  <style>
+    /* ─────────────────────────────────────────
+       공통 스타일
+    ───────────────────────────────────────── */
+    body {
+      font-family: sans-serif;
+      background: #eef7fa;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h2 {
+      margin-bottom: 8px;
+    }
+    .card p {
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .card .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .view-btn {
+      background: white;
+      color: #007aff;
+      border: 1px solid #007aff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .select-btn {
+      background: #03C75A;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    /* ─────────────────────────────────────────
+       체크아웃 섹션
+    ───────────────────────────────────────── */
+    .checkout {
+      display: none;
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .checkout h2 {
+      margin-bottom: 16px;
+    }
+    .people-selector {
+      margin: 16px 0;
+      font-weight: bold;
+    }
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-left: 8px;
+    }
+    .stepper button {
+      background: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .stepper span {
+      display: inline-block;
+      width: 40px;
+      text-align: center;
+      font-size: 1rem;
+    }
+    .total {
+      font-size: 1.2rem;
+      margin: 16px 0;
+    }
+    .btn-pay {
+      background: #03C75A;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    /* ─────────────────────────────────────────
+       모달 스타일
+    ───────────────────────────────────────── */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 95vw;
+      max-width: 1200px;
+      max-height: 95vh;
+      overflow-y: auto;
+      text-align: center;
+    }
+    .modal-content h2 {
+      margin-bottom: 16px;
+    }
+    .modal-content img.detail {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      cursor: zoom-in;
+      transition: transform .2s;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .modal-content img.detail.zoomed {
+      cursor: zoom-out;
+      transform: scale(2);
+    }
+    .modal-content .close {
+      background: #007aff;
+      color: white;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>완도해양치유완도 프로그램 안내내</h1>
+
+  <!-- 프로그램 카드 -->
+  <div class="grid">
+    <div class="card">
+      <h2>기본 프로그램</h2>
+      <p>₩36,000</p>
+      <div class="actions">
+        <button class="view-btn" onclick="openModal('기본')">상세보기</button>
+        <button class="select-btn" onclick="selectProgram('기본')">선택하기</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>디럭스 프로그램</h2>
+      <p>₩80,000</p>
+      <div class="actions">
+        <button class="view-btn" onclick="openModal('디럭스')">상세보기</button>
+        <button class="select-btn" onclick="selectProgram('디럭스')">선택하기</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>프리미엄 프로그램</h2>
+      <p>₩125,000</p>
+      <div class="actions">
+        <button class="view-btn" onclick="openModal('프리미엄')">상세보기</button>
+        <button class="select-btn" onclick="selectProgram('프리미엄')">선택하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 체크아웃 섹션 -->
+  <div id="checkout" class="checkout"></div>
+
+  <!-- 상세보기 모달 -->
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+
+  <script>
+    // 이미지 & 가격 매핑
+    const detailMap = {
+      "기본":     "basic.jpg",
+      "디럭스":   "deluxe.jpg",
+      "프리미엄": "premium.jpg"
+    };
+    const priceMap = {
+      "기본":     36000,
+      "디럭스":   80000,
+      "프리미엄": 125000
+    };
+    const PAYMENT_PAGE_URL = "https://m.pay.naver.com";
+
+    const modal     = document.getElementById("modal");
+    const container = document.getElementById("modal-content");
+    const checkout  = document.getElementById("checkout");
+
+    // 1) 상세보기 모달 열기
+    function openModal(type) {
+      const imgSrc = detailMap[type];
+      container.innerHTML = `
+        <h2>${type} 프로그램 상세보기</h2>
+        <img class="detail" src="${imgSrc}" alt="${type} 상세 이미지">
+        <button class="close" onclick="closeModal()">닫기</button>
+      `;
+      // 확대/축소 기능
+      const imgEl = container.querySelector("img.detail");
+      imgEl.addEventListener("click", () =>
+        imgEl.classList.toggle("zoomed")
+      );
+      modal.style.display = "flex";
+    }
+    function closeModal() {
+      const imgEl = container.querySelector("img.detail");
+      if (imgEl) imgEl.classList.remove("zoomed");
+      modal.style.display = "none";
+    }
+    window.addEventListener("click", e => {
+      if (e.target === modal) closeModal();
+    });
+
+    // 2) 선택하기 → 체크아웃 보여주기
+    function selectProgram(type) {
+      const price = priceMap[type];
+      checkout.innerHTML = `
+        <h2>선택된 프로그램: ${type}</h2>
+
+        <div class="people-selector">
+          인원수
+          <div class="stepper">
+            <button id="dec">－</button>
+            <span id="people-count">1</span>
+            <button id="inc">＋</button>
+          </div>
+        </div>
+
+        <div class="total">총 금액: ₩${price.toLocaleString()}</div>
+        <button class="btn-pay" id="btn-pay">결제하기</button>
+      `;
+      checkout.style.display = "block";
+
+      let count = 1;
+      const peopleDisplay = document.getElementById("people-count");
+      const decBtn        = document.getElementById("dec");
+      const incBtn        = document.getElementById("inc");
+      const totalEl       = checkout.querySelector(".total");
+      const payBtn        = document.getElementById("btn-pay");
+
+      // 인원수 감소
+      decBtn.addEventListener("click", () => {
+        if (count > 1) {
+          count--;
+          peopleDisplay.textContent = count;
+          updateTotal();
+        }
+      });
+      // 인원수 증가
+      incBtn.addEventListener("click", () => {
+        count++;
+        peopleDisplay.textContent = count;
+        updateTotal();
+      });
+      // 총액 갱신
+      function updateTotal() {
+        const total = price * count;
+        totalEl.textContent = `총 금액: ₩${total.toLocaleString()}`;
+      }
+      // 결제하기
+      payBtn.addEventListener("click", () => {
+        const total = price * count;
+        const url = `${PAYMENT_PAGE_URL}?program=${encodeURIComponent(type)}&count=${count}&total=${total}`;
+        window.open(url, "_blank");
+      });
+    }
+  </script>
+
+</body>
+</html>
