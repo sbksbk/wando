@@ -12,36 +12,44 @@
       text-align: center;
     }
 
+    h1 {
+      font-size: 3.6rem;
+      margin: 2rem 0 1.5rem;
+      color: #222;
+    }
+
     .programs {
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 3rem;
       flex-wrap: wrap;
     }
 
     .program {
       background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 200px;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      width: 280px;
     }
 
     .title {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
 
     .price {
-      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
       font-weight: bold;
     }
 
     .button-group button {
-      margin: 0.2rem;
-      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
     }
 
@@ -55,7 +63,6 @@
       color: white;
     }
 
-    /* 모달 스타일 */
     .modal {
       display: none;
       position: fixed;
@@ -88,7 +95,7 @@
     }
 
     .modal img.zoomed {
-      transform: scale(1.5); /* 확대 효과 */
+      transform: scale(1.5);
       cursor: zoom-out;
     }
 
@@ -111,11 +118,64 @@
       z-index: 10;
     }
 
-    @media (max-width: 600px) {
-      .modal-content {
-        width: 95vw;
-        height: 90vh;
-      }
+    #paymentBox {
+      display: none;
+      margin-top: 3rem;
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    #paymentBox h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    #paymentBox p {
+      font-size: 1.4rem;
+      margin: 1rem 0;
+    }
+
+    .count-btn {
+      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+    }
+
+    #qrSection {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    #qrSection img {
+      width: 200px;
+      height: 200px;
+    }
+
+    #qrSection p {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: #444;
+    }
+
+    .pay-btn {
+      margin-top: 1rem;
+      padding: 0.7rem 2rem;
+      background: #03c75a;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -129,7 +189,7 @@
       <div class="price">₩36,000</div>
       <div class="button-group">
         <button class="detail-btn" onclick="showDetail('기본')">상세보기</button>
-        <button class="select-btn">선택하기</button>
+        <button class="select-btn" onclick="selectProgram('기본')">선택하기</button>
       </div>
     </div>
     <div class="program">
@@ -137,7 +197,7 @@
       <div class="price">₩80,000</div>
       <div class="button-group">
         <button class="detail-btn" onclick="showDetail('디럭스')">상세보기</button>
-        <button class="select-btn">선택하기</button>
+        <button class="select-btn" onclick="selectProgram('디럭스')">선택하기</button>
       </div>
     </div>
     <div class="program">
@@ -145,17 +205,36 @@
       <div class="price">₩125,000</div>
       <div class="button-group">
         <button class="detail-btn" onclick="showDetail('프리미엄')">상세보기</button>
-        <button class="select-btn">선택하기</button>
+        <button class="select-btn" onclick="selectProgram('프리미엄')">선택하기</button>
       </div>
     </div>
   </div>
 
-  <!-- 모달 -->
+  <!-- 상세 이미지 모달 -->
   <div class="modal" id="detailModal">
     <div class="modal-content">
       <div class="close-icon" onclick="closeModal()">×</div>
       <h2 id="modalTitle">상세 보기</h2>
       <img id="modalImage" src="" alt="상세 이미지" onclick="toggleZoom(this)">
+    </div>
+  </div>
+
+  <!-- 결제창 -->
+  <div id="paymentBox">
+    <h2>프로그램 결제</h2>
+    <p id="selectedProgram"></p>
+    <p>
+      인원수:
+      <button onclick="changeCount(-1)" class="count-btn">−</button>
+      <span id="peopleCount" style="display:inline-block; min-width: 30px;">1</span>
+      <button onclick="changeCount(1)" class="count-btn">＋</button>
+    </p>
+    <p>총 금액: <span id="totalPrice">0</span>원</p>
+    <button class="pay-btn" onclick="showQR()">결제하기</button>
+
+    <div id="qrSection">
+      <p>👇 스마트폰으로 QR을 스캔해 결제하세요</p>
+      <img src="qr.jpg" alt="네이버페이 결제 QR코드">
     </div>
   </div>
 
@@ -165,6 +244,15 @@
       "디럭스": "./deluxe.jpg",
       "프리미엄": "./premium.jpg"
     };
+
+    const priceMap = {
+      "기본": 36000,
+      "디럭스": 80000,
+      "프리미엄": 125000
+    };
+
+    let currentCount = 1;
+    let currentUnitPrice = 0;
 
     function showDetail(type) {
       document.getElementById("modalTitle").innerText = `${type} 프로그램 상세보기`;
@@ -180,6 +268,33 @@
 
     function toggleZoom(img) {
       img.classList.toggle("zoomed");
+    }
+
+    function selectProgram(type) {
+      const unitPrice = priceMap[type];
+      currentCount = 1;
+      currentUnitPrice = unitPrice;
+      document.getElementById("selectedProgram").innerText = `${type} 프로그램 (${unitPrice.toLocaleString()}원)`;
+      document.getElementById("paymentBox").style.display = "block";
+      document.getElementById("peopleCount").innerText = currentCount;
+      document.getElementById("qrSection").style.display = "none";
+      updateTotal();
+    }
+
+    function changeCount(delta) {
+      currentCount += delta;
+      if (currentCount < 1) currentCount = 1;
+      document.getElementById("peopleCount").innerText = currentCount;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const total = currentCount * currentUnitPrice;
+      document.getElementById("totalPrice").innerText = total.toLocaleString();
+    }
+
+    function showQR() {
+      document.getElementById("qrSection").style.display = "block";
     }
   </script>
 
