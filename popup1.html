@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>완도해양치유센터 이벤트</title>
+  <title>완도해양치유센터 이벤트 안내</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <style>
@@ -13,22 +13,28 @@
       font-family: sans-serif;
     }
 
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin: 1rem 0 0.5rem;
+      color: #333;
+    }
+
     .swiper {
       width: 100vw;
-      height: 100vh;
+      height: calc(100vh - 80px); /* 제목 높이 제외 */
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .swiper-slide {
-      width: 280px;
+      width: 320px; /* ✅ 더 크게 */
       transition: opacity 0.4s;
       opacity: 0.5;
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: default;
     }
 
     .swiper-slide-active {
@@ -44,14 +50,15 @@
     }
 
     .swiper-slide-active img {
-      transform: scale(1.2); /* 가운데 이미지 확대 */
+      transform: scale(1.25); /* ✅ 확대 비율 증가 */
       z-index: 2;
     }
   </style>
 </head>
 <body>
 
-<!-- 메인 슬라이더 -->
+<h1>완도해양치유센터 이벤트 안내</h1>
+
 <div class="swiper main-swiper">
   <div class="swiper-wrapper">
     <div class="swiper-slide"><img src="https://www.wandohealing.or.kr/ybmodule.file/board/healing_popup/420x500/1743035599.jpg" alt="현장 접수 안내"></div>
