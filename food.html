@@ -6,178 +6,286 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    body { margin: 0; padding: 1rem; font-family: sans-serif; background: #f4f4f4; color: #333; }
-    h1 { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; }
-
+    body {
+      margin: 0;
+      padding: 1rem;
+      font-family: sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      gap: 1rem;
+    }
     /* 그리드 레이아웃 */
-    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 960px; margin: 0 auto 2rem; }
-    .menu-item { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-    .menu-item:hover { transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-    .menu-item.selected { outline: 3px solid #1e90ff; }
-    .menu-item img { display: block; width: 100%; height: auto; }
-    .menu-info { padding: 0.75rem; text-align: center; }
-    .menu-info .name { font-size: 1.1rem; margin: 0.5rem 0 0.25rem; font-weight: bold; }
-    .menu-info .price { font-size: 1rem; color: #1e90ff; }
+    .menu-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .menu-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .menu-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .menu-item.selected {
+      outline: 3px solid #1e90ff;
+    }
+    .menu-item img {
+      width: 100%;
+      display: block;
+    }
+    .menu-info {
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .menu-info .name {
+      font-size: 1.1rem;
+      margin: 0.5rem 0 0.25rem;
+      font-weight: bold;
+    }
+    .menu-info .price {
+      font-size: 1rem;
+      color: #1e90ff;
+    }
 
-    /* 주문 박스 */
-    #orderBox { max-width: 640px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); padding: 1.5rem; display: none; }
-    #orderBox h2 { margin-top: 0; font-size: 1.8rem; text-align: center; }
-    #orderList .order-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    #orderList .order-item img { width: 80px; border-radius: 6px; }
-    #orderList .details { flex: 1; }
-    #orderList .details p { margin: 0.3rem 0; font-size: 1.1rem; }
-    .count-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
-    .count-btn { width: 32px; height: 32px; border: none; border-radius: 6px; background: #e0e0e0; font-size: 1.2rem; cursor: pointer; }
-    #grandTotalRow { text-align: right; font-size: 1.2rem; margin-top: 1rem; font-weight: bold; }
-    .delete-btn { margin-left: 0.5rem; background: #ff4d4f; border: none; color: #fff; padding: 0.25rem 0.5rem; border-radius: 6px; cursor: pointer; }
-    .delete-btn:active { background: #d9363e; }
-    #payBtn { display: block; width: 100%; padding: 0.75rem; font-size: 1.2rem; background: #1e90ff; color: #fff; border: none; border-radius: 8px; cursor: pointer; margin-top: 1rem; }
-    #payBtn:active { background: #186fcb; }
+    /* 주문 박스 (사이드 드로어) */
+    #orderBox {
+      width: 300px;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 1rem;
+      display: none;
+      position: relative;
+    }
+    #orderBox h2 {
+      margin: 0 0 1rem;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    #orderList .order-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    #orderList .order-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    #orderList .order-item img {
+      width: 60px;
+      border-radius: 6px;
+    }
+    #orderList .details {
+      flex: 1;
+    }
+    #orderList .details p {
+      margin: 0.2rem 0;
+      font-size: 1rem;
+    }
+    .count-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.3rem 0;
+    }
+    .count-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 6px;
+      background: #e0e0e0;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .delete-btn {
+      margin-left: auto;
+      background: #ff4d4f;
+      border: none;
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .delete-btn:active {
+      background: #d9363e;
+    }
+    #grandTotalRow {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #payBtn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      background: #1e90ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #payBtn:active {
+      background: #186fcb;
+    }
   </style>
 </head>
 <body>
 
   <h1>완도해양치유센터 식당 메뉴</h1>
 
-  <!-- 3×2 그리드 메뉴 -->
-  <div class="menu-grid">
-    <div class="menu-item" data-name="완도전복죽"          data-price="13000">
-      <img src="완도전복죽.png"          alt="완도전복죽">
-      <div class="menu-info">
-        <div class="name">완도전복죽</div>
-        <div class="price">13,000원</div>
+  <div class="container">
+    <!-- 메뉴 그리드 -->
+    <div class="menu-grid">
+      <div class="menu-item" data-name="완도전복죽" data-price="13000">
+        <img src="완도전복죽.png" alt="완도전복죽">
+        <div class="menu-info">
+          <div class="name">완도전복죽</div>
+          <div class="price">13,000원</div>
+        </div>
+      </div>
+      <div class="menu-item" data-name="완도전복해초라면" data-price="10000">
+        <img src="완도전복해초라면.png" alt="완도전복해초라면">
+        <div class="menu-info">
+          <div class="name">완도전복해초라면</div>
+          <div class="price">10,000원</div>
+        </div>
+      </div>
+      <div class="menu-item" data-name="완도전복해초비빔밥" data-price="15000">
+        <img src="완도전복해초비빔밥.png" alt="완도전복해초비빔밥">
+        <div class="menu-info">
+          <div class="name">완도전복해초비빔밥</div>
+          <div class="price">15,000원</div>
+        </div>
+      </div>
+      <div class="menu-item" data-name="완도전복무침" data-price="20000">
+        <img src="완도전복무침.png" alt="완도전복무침">
+        <div class="menu-info">
+          <div class="name">완도전복무침</div>
+          <div class="price">20,000원</div>
+        </div>
+      </div>
+      <div class="menu-item" data-name="완도세멸치솥밥" data-price="15000">
+        <img src="완도세멸치솥밥.png" alt="완도세멸치솥밥">
+        <div class="menu-info">
+          <div class="name">완도세멸치솥밥</div>
+          <div class="price">15,000원</div>
+        </div>
+      </div>
+      <div class="menu-item" data-name="완도전복물회" data-price="17000">
+        <img src="완도전복물회.png" alt="완도전복물회">
+        <div class="menu-info">
+          <div class="name">완도전복물회</div>
+          <div class="price">17,000원</div>
+        </div>
       </div>
     </div>
-    <div class="menu-item" data-name="완도전복해초라면"     data-price="10000">
-      <img src="완도전복해초라면.png"   alt="완도전복해초라면">
-      <div class="menu-info">
-        <div class="name">완도전복해초라면</div>
-        <div class="price">10,000원</div>
-      </div>
-    </div>
-    <div class="menu-item" data-name="완도전복해초비빔밥"   data-price="15000">
-      <img src="완도전복해초비빔밥.png" alt="완도전복해초비빔밥">
-      <div class="menu-info">
-        <div class="name">완도전복해초비빔밥</div>
-        <div class="price">15,000원</div>
-      </div>
-    </div>
-    <div class="menu-item" data-name="완도전복무침"         data-price="20000">
-      <img src="완도전복무침.png"       alt="완도전복무침">
-      <div class="menu-info">
-        <div class="name">완도전복무침</div>
-        <div class="price">20,000원</div>
-      </div>
-    </div>
-    <div class="menu-item" data-name="완도세멸치솥밥"       data-price="15000">
-      <img src="완도세멸치솥밥.png"     alt="완도세멸치솥밥">
-      <div class="menu-info">
-        <div class="name">완도세멸치솥밥</div>
-        <div class="price">15,000원</div>
-      </div>
-    </div>
-    <div class="menu-item" data-name="완도전복물회"         data-price="17000">
-      <img src="완도전복물회.png"       alt="완도전복물회">
-      <div class="menu-info">
-        <div class="name">완도전복물회</div>
-        <div class="price">17,000원</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- 주문창 -->
-  <div id="orderBox">
-    <h2>선택하신 메뉴</h2>
-    <div id="orderList"><!-- JS로 주문 항목 추가 --></div>
-    <div id="grandTotalRow">
-      전체 금액: <span id="grandTotal">0</span>원
+    <!-- 주문창 -->
+    <div id="orderBox">
+      <h2>선택하신 메뉴</h2>
+      <div id="orderList"></div>
+      <div id="grandTotalRow">
+        전체 금액: <span id="grandTotal">0</span>원
+      </div>
+      <button id="payBtn">결제하기</button>
     </div>
-    <button id="payBtn">결제하기</button>
   </div>
 
   <script>
-    // 장바구니 객체
     const cart = {};
+    const orderBox = document.getElementById('orderBox');
 
-    // 메뉴 클릭 시
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', () => {
         const name   = item.dataset.name;
         const price  = parseInt(item.dataset.price, 10);
         const imgSrc = item.querySelector('img').src;
-
-        // 아직 담기지 않은 메뉴면 추가
-        if (!cart[name]) {
-          cart[name] = { price, count: 1, imgSrc };
-        }
-
+        if (!cart[name]) cart[name] = { price, count: 1, imgSrc };
         updateSelectionHighlight();
         renderCart();
-        document.getElementById('orderBox').style.display = 'block';
+        orderBox.style.display = 'block';
       });
     });
 
-    // 선택된 메뉴 강조
     function updateSelectionHighlight() {
       document.querySelectorAll('.menu-item').forEach(item => {
-        const name = item.dataset.name;
-        item.classList.toggle('selected', !!cart[name]);
+        item.classList.toggle('selected', !!cart[item.dataset.name]);
       });
     }
 
-    // 장바구니 렌더링
     function renderCart() {
       const listEl = document.getElementById('orderList');
       listEl.innerHTML = '';
       let grand = 0;
-
       for (const name in cart) {
         const { price, count, imgSrc } = cart[name];
-        const lineTotal = price * count;
-        grand += lineTotal;
-
+        const total = price * count;
+        grand += total;
         const key = name.replace(/\s+/g,'-');
-        const itemEl = document.createElement('div');
-        itemEl.className = 'order-item';
-        itemEl.innerHTML = `
+        const div = document.createElement('div');
+        div.className = 'order-item';
+        div.innerHTML = `
           <img src="${imgSrc}" alt="${name}">
           <div class="details">
             <p>${name}</p>
             <p>단가: ${price.toLocaleString()}원</p>
             <div class="count-row">
               수량:
-              <button class="count-btn" onclick="updateCount('${name}', -1)">−</button>
+              <button class="count-btn" onclick="updateCount('${name}',-1)">−</button>
               <span id="qty-${key}">${count}</span>
-              <button class="count-btn" onclick="updateCount('${name}', 1)">＋</button>
+              <button class="count-btn" onclick="updateCount('${name}',1)">＋</button>
               <button class="delete-btn" onclick="removeItem('${name}')">삭제</button>
             </div>
-            <p>금액: <span id="lt-${key}">${lineTotal.toLocaleString()}</span>원</p>
-          </div>
-        `;
-        listEl.appendChild(itemEl);
+            <p>금액: <span id="lt-${key}">${total.toLocaleString()}</span>원</p>
+          </div>`;
+        listEl.appendChild(div);
       }
-
       document.getElementById('grandTotal').innerText = grand.toLocaleString();
     }
 
-    // 수량 변경
     function updateCount(name, delta) {
       cart[name].count = Math.max(1, cart[name].count + delta);
       renderCart();
     }
 
-    // 항목 삭제
     function removeItem(name) {
       delete cart[name];
       renderCart();
       updateSelectionHighlight();
-      // 장바구니가 비면 숨기기
-      if (Object.keys(cart).length === 0) {
-        document.getElementById('orderBox').style.display = 'none';
+      if (!Object.keys(cart).length) {
+        orderBox.style.display = 'none';
       }
     }
 
-    // 결제하기
     document.getElementById('payBtn').addEventListener('click', () => {
       const total = document.getElementById('grandTotal').innerText;
       alert(`총 결제 금액: ${total}원\n결제 진행합니다.`);
